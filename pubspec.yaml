@@ -15,6 +15,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   google_fonts: ^6.1.0
+  intl: ^0.18.1
 
 flutter:
   uses-material-design: true
