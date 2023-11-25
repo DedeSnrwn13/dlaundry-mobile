@@ -11,10 +11,12 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
+  d_method: ^0.2.3
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
   google_fonts: ^6.1.0
+  http: ^1.1.0
   intl: ^0.18.1
   shared_preferences: ^2.2.2
 
