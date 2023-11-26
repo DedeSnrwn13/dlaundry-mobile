@@ -3,11 +3,15 @@
 import 'package:dlaundry_mobile/config/app_assets.dart';
 import 'package:dlaundry_mobile/config/app_colors.dart';
 import 'package:dlaundry_mobile/config/app_constants.dart';
+import 'package:dlaundry_mobile/config/app_response.dart';
+import 'package:dlaundry_mobile/config/failure.dart';
+import 'package:dlaundry_mobile/datasources/user_datasource.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:d_input/d_input.dart';
 import 'package:d_view/d_view.dart';
 import 'package:d_button/d_button.dart';
+import 'package:d_info/d_info.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -22,7 +26,57 @@ class _RegisterPageState extends State<RegisterPage> {
   final editPassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  execute() {}
+  execute() {
+    bool validInput = formKey.currentState!.validate();
+    if (!validInput) return;
+
+    UserDatasource.register(
+      editUsername.text,
+      editEmail.text,
+      editPassword.text,
+    ).then((value) {
+      String newStatus = '';
+
+      value.fold(
+        (failure) {
+          switch (failure.runtimeType) {
+            case ServerFailure:
+              newStatus = 'Server Error';
+              DInfo.toastError(newStatus);
+              break;
+            case NotFoundFailure:
+              newStatus = 'Error Not Found';
+              DInfo.toastError(newStatus);
+              break;
+            case ForbiddenFailure:
+              newStatus = 'You Don\'t Have Access';
+              DInfo.toastError(newStatus);
+              break;
+            case BadRequestFailure:
+              newStatus = 'Bad Request';
+              DInfo.toastError(newStatus);
+              break;
+            case InvalidFailure:
+              newStatus = 'Server Error';
+              AppResponse.invalidInput(context, failure.message ?? '{}');
+              break;
+            case UnauthorizedFailure:
+              newStatus = 'Unauthorized';
+              DInfo.toastError(newStatus);
+              break;
+            default:
+              newStatus = 'Request Error';
+              DInfo.toastError(newStatus);
+              newStatus = failure.message ?? '-';
+              break;
+          }
+        },
+        (result) {
+          DInfo.toastSuccess('Register Success');
+        },
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
