@@ -1,12 +1,12 @@
 class AppConstants {
   static const appName = 'D Laundry';
 
-  static const _host = 'http://50.50.0.204:8000';
+  static const _host = 'http://127.0.0.1:8000';
 
-  /// ``` baseURL = 'http://50.50.0.204:8000/api' ```
+  /// ``` baseURL = 'http://127.0.0.1:8000/api' ```
   static const baseURL = '$_host/api';
 
-  /// ``` baseURL = 'http://50.50.0.204:8000/storage' ```
+  /// ``` baseURL = 'http://127.0.0.1:8000/storage' ```
   static const baseImageURL = '$_host/storage';
 
   static const laundryStatusCategory = [

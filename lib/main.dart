@@ -1,3 +1,6 @@
+// ignore_for_file: depend_on_referenced_packages
+
+import 'package:dlaundry_mobile/pages/auth/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'config/app_colors.dart';
@@ -14,26 +17,31 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: AppColor.primary,
-          scaffoldBackgroundColor: Colors.white,
-          colorScheme: ColorScheme.light(
-              primary: AppColor.primary, secondary: Colors.greenAccent[400]!),
-          textTheme: GoogleFonts.latoTextTheme(),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-                  backgroundColor:
-                      const MaterialStatePropertyAll(AppColor.primary),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
-                  padding: const MaterialStatePropertyAll(
-                      EdgeInsets.symmetric(horizontal: 16, vertical: 14)),
-                  textStyle: const MaterialStatePropertyAll(
-                      TextStyle(fontSize: 15))))),
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+        primaryColor: AppColor.primary,
+        scaffoldBackgroundColor: Colors.white,
+        colorScheme: ColorScheme.light(
+          primary: AppColor.primary,
+          secondary: Colors.greenAccent[400]!,
+        ),
+        textTheme: GoogleFonts.latoTextTheme(),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: const MaterialStatePropertyAll(AppColor.primary),
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            padding: const MaterialStatePropertyAll(
+              EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            ),
+            textStyle: const MaterialStatePropertyAll(
+              TextStyle(fontSize: 15),
+            ),
+          ),
         ),
       ),
+      home: const RegisterPage(),
     );
   }
 }
