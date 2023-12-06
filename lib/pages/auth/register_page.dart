@@ -6,21 +6,23 @@ import 'package:dlaundry_mobile/config/app_constants.dart';
 import 'package:dlaundry_mobile/config/app_response.dart';
 import 'package:dlaundry_mobile/config/failure.dart';
 import 'package:dlaundry_mobile/datasources/user_datasource.dart';
+import 'package:dlaundry_mobile/providers/register_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:d_input/d_input.dart';
 import 'package:d_view/d_view.dart';
 import 'package:d_button/d_button.dart';
 import 'package:d_info/d_info.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  ConsumerState<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends ConsumerState<RegisterPage> {
   final editUsername = TextEditingController();
   final editEmail = TextEditingController();
   final editPassword = TextEditingController();
@@ -29,6 +31,8 @@ class _RegisterPageState extends State<RegisterPage> {
   execute() {
     bool validInput = formKey.currentState!.validate();
     if (!validInput) return;
+
+    setRegisterStatus(ref, 'Loading');
 
     UserDatasource.register(
       editUsername.text,
@@ -70,9 +74,13 @@ class _RegisterPageState extends State<RegisterPage> {
               newStatus = failure.message ?? '-';
               break;
           }
+
+          setRegisterStatus(ref, newStatus);
         },
         (result) {
           DInfo.toastSuccess('Register Success');
+
+          setRegisterStatus(ref, 'Register Success');
         },
       );
     });
@@ -150,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                             ),
-                            DView.spaceWidth(10),
+                            DView.width(10),
                             Expanded(
                               child: DInput(
                                 controller: editUsername,
@@ -164,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ],
                         ),
                       ),
-                      DView.spaceHeight(16),
+                      DView.height(16),
                       IntrinsicHeight(
                         child: Row(
                           children: [
@@ -179,7 +187,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                             ),
-                            DView.spaceWidth(10),
+                            DView.width(10),
                             Expanded(
                               child: DInput(
                                 controller: editEmail,
@@ -193,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ],
                         ),
                       ),
-                      DView.spaceHeight(16),
+                      DView.height(16),
                       IntrinsicHeight(
                         child: Row(
                           children: [
@@ -208,7 +216,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                             ),
-                            DView.spaceWidth(10),
+                            DView.width(10),
                             Expanded(
                               child: DInputPassword(
                                 controller: editPassword,
@@ -222,7 +230,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ],
                         ),
                       ),
-                      DView.spaceHeight(16),
+                      DView.height(16),
                       IntrinsicHeight(
                         child: Row(
                           children: [
@@ -244,14 +252,25 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                             ),
-                            DView.spaceWidth(10),
+                            DView.width(10),
                             Expanded(
-                              child: ElevatedButton(
-                                onPressed: () => execute(),
-                                style: const ButtonStyle(
-                                  alignment: Alignment.centerLeft,
-                                ),
-                                child: const Text('Register'),
+                              child: Consumer(
+                                builder: (_, wiRef, __) {
+                                  String status =
+                                      wiRef.watch(registerStatusProvider);
+
+                                  if (status == 'Loading') {
+                                    return DView.loadingCircle();
+                                  }
+
+                                  return ElevatedButton(
+                                    onPressed: () => execute(),
+                                    style: const ButtonStyle(
+                                      alignment: Alignment.centerLeft,
+                                    ),
+                                    child: const Text('Register'),
+                                  );
+                                },
                               ),
                             ),
                           ],
