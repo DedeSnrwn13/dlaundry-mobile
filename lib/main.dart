@@ -1,10 +1,14 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:dlaundry_mobile/config/app_session.dart';
 import 'package:dlaundry_mobile/pages/auth/login_page.dart';
+import 'package:dlaundry_mobile/pages/dashboard_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'config/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:d_view/d_view.dart';
 
 void main() {
   runApp(
@@ -46,7 +50,24 @@ class MainApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const LoginPage(),
+      home: FutureBuilder(
+        future: AppSession.getUser(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return DView.loadingCircle();
+          }
+
+          if (snapshot.data == null) {
+            if (kDebugMode) print('user: null');
+
+            return const LoginPage();
+          }
+
+          if (kDebugMode) print(snapshot.data!.toJson());
+
+          return const DashboardPage();
+        },
+      ),
     );
   }
 }
