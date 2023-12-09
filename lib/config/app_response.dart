@@ -21,12 +21,12 @@ class AppResponse {
         throw BadRequestFailure(message: response.body);
       case 401:
         throw UnauthorizedFailure(message: response.body);
-      case 402:
-        throw InvalidFailure(message: response.body);
       case 403:
         throw ForbiddenFailure(message: response.body);
       case 404:
         throw NotFoundFailure(message: response.body);
+      case 422:
+        throw InvalidInputFailure(message: response.body);
       case 500:
         throw ServerFailure(message: response.body);
       default:

@@ -20,8 +20,8 @@ class ForbiddenFailure extends Failure {
   ForbiddenFailure({required super.message});
 }
 
-class InvalidFailure extends Failure {
-  InvalidFailure({required super.message});
+class InvalidInputFailure extends Failure {
+  InvalidInputFailure({required super.message});
 }
 
 class NotFoundFailure extends Failure {
