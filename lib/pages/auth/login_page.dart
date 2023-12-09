@@ -5,7 +5,9 @@ import 'package:dlaundry_mobile/config/app_colors.dart';
 import 'package:dlaundry_mobile/config/app_constants.dart';
 import 'package:dlaundry_mobile/config/app_response.dart';
 import 'package:dlaundry_mobile/config/failure.dart';
+import 'package:dlaundry_mobile/config/nav.dart';
 import 'package:dlaundry_mobile/datasources/user_datasource.dart';
+import 'package:dlaundry_mobile/pages/auth/register_page.dart';
 import 'package:dlaundry_mobile/providers/register_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,76 +17,71 @@ import 'package:d_button/d_button.dart';
 import 'package:d_info/d_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterPage extends ConsumerStatefulWidget {
-  const RegisterPage({super.key});
+class LoginPage extends ConsumerStatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  ConsumerState<RegisterPage> createState() => _RegisterPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends ConsumerState<RegisterPage> {
-  final editUsername = TextEditingController();
+class _LoginPageState extends ConsumerState<LoginPage> {
   final editEmail = TextEditingController();
   final editPassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  execute() {
-    bool validInput = formKey.currentState!.validate();
-    if (!validInput) return;
+  // execute() {
+  //   bool validInput = formKey.currentState!.validate();
+  //   if (!validInput) return;
 
-    setRegisterStatus(ref, 'Loading');
+  //   setRegisterStatus(ref, 'Loading');
 
-    UserDatasource.register(
-      editUsername.text,
-      editEmail.text,
-      editPassword.text,
-    ).then((value) {
-      String newStatus = '';
+  //   UserDatasource.register(editEmail.text, editPassword.text).then((value) {
+  //     String newStatus = '';
 
-      value.fold(
-        (failure) {
-          switch (failure.runtimeType) {
-            case ServerFailure:
-              newStatus = 'Server Error';
-              DInfo.toastError(newStatus);
-              break;
-            case NotFoundFailure:
-              newStatus = 'Error Not Found';
-              DInfo.toastError(newStatus);
-              break;
-            case ForbiddenFailure:
-              newStatus = 'You Don\'t Have Access';
-              DInfo.toastError(newStatus);
-              break;
-            case BadRequestFailure:
-              newStatus = 'Bad Request';
-              DInfo.toastError(newStatus);
-              break;
-            case InvalidInputFailure:
-              newStatus = 'Invalid Input';
-              AppResponse.invalidInput(context, failure.message ?? '{}');
-              break;
-            case UnauthorizedFailure:
-              newStatus = 'Unauthorized';
-              DInfo.toastError(newStatus);
-              break;
-            default:
-              newStatus = 'Request Error';
-              DInfo.toastError(newStatus);
-              newStatus = failure.message ?? '-';
-              break;
-          }
+  //     value.fold(
+  //       (failure) {
+  //         switch (failure.runtimeType) {
+  //           case ServerFailure:
+  //             newStatus = 'Server Error';
+  //             DInfo.toastError(newStatus);
+  //             break;
+  //           case NotFoundFailure:
+  //             newStatus = 'Error Not Found';
+  //             DInfo.toastError(newStatus);
+  //             break;
+  //           case ForbiddenFailure:
+  //             newStatus = 'You Don\'t Have Access';
+  //             DInfo.toastError(newStatus);
+  //             break;
+  //           case BadRequestFailure:
+  //             newStatus = 'Bad Request';
+  //             DInfo.toastError(newStatus);
+  //             break;
+  //           case InvalidInputFailure:
+  //             newStatus = 'Invalid Input';
+  //             AppResponse.invalidInput(context, failure.message ?? '{}');
+  //             break;
+  //           case UnauthorizedFailure:
+  //             newStatus = 'Unauthorized';
+  //             DInfo.toastError(newStatus);
+  //             break;
+  //           default:
+  //             newStatus = 'Request Error';
+  //             DInfo.toastError(newStatus);
+  //             newStatus = failure.message ?? '-';
+  //             break;
+  //         }
 
-          setRegisterStatus(ref, newStatus);
-        },
-        (result) {
-          DInfo.toastSuccess('Register Success');
+  //         setRegisterStatus(ref, newStatus);
+  //       },
+  //       (result) {
+  //         DInfo.toastSuccess('Register Success');
 
-          setRegisterStatus(ref, 'Register Success');
-        },
-      );
-    });
-  }
+  //         setRegisterStatus(ref, 'Register Success');
+  //       },
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -153,35 +150,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                 color: Colors.white70,
                                 borderRadius: BorderRadius.circular(10),
                                 child: const Icon(
-                                  Icons.person,
-                                  color: AppColor.primary,
-                                ),
-                              ),
-                            ),
-                            DView.width(10),
-                            Expanded(
-                              child: DInput(
-                                controller: editUsername,
-                                fillColor: Colors.white70,
-                                hint: 'Username',
-                                radius: BorderRadius.circular(10),
-                                validator: (input) =>
-                                    input == '' ? "Don't empty" : null,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      DView.height(16),
-                      IntrinsicHeight(
-                        child: Row(
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: Material(
-                                color: Colors.white70,
-                                borderRadius: BorderRadius.circular(10),
-                                child: const Icon(
                                   Icons.email,
                                   color: AppColor.primary,
                                 ),
@@ -238,13 +206,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                               aspectRatio: 1,
                               child: DButtonFlat(
                                 onClick: () {
-                                  Navigator.pop(context);
+                                  Nav.push(context, const RegisterPage());
                                 },
                                 padding: const EdgeInsets.all(0),
                                 radius: 10,
                                 mainColor: Colors.white70,
                                 child: const Text(
-                                  'LOG',
+                                  'REG',
                                   style: TextStyle(
                                     color: AppColor.primary,
                                     fontWeight: FontWeight.bold,
@@ -264,11 +232,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                   }
 
                                   return ElevatedButton(
-                                    onPressed: () => execute(),
+                                    onPressed: () => {},
                                     style: const ButtonStyle(
                                       alignment: Alignment.centerLeft,
                                     ),
-                                    child: const Text('Register'),
+                                    child: const Text('Login'),
                                   );
                                 },
                               ),

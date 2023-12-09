@@ -1,6 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:dlaundry_mobile/pages/auth/register_page.dart';
+import 'package:dlaundry_mobile/pages/auth/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'config/app_colors.dart';
@@ -46,7 +46,7 @@ class MainApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const RegisterPage(),
+      home: const LoginPage(),
     );
   }
 }
