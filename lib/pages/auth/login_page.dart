@@ -4,11 +4,12 @@ import 'package:dlaundry_mobile/config/app_assets.dart';
 import 'package:dlaundry_mobile/config/app_colors.dart';
 import 'package:dlaundry_mobile/config/app_constants.dart';
 import 'package:dlaundry_mobile/config/app_response.dart';
+import 'package:dlaundry_mobile/config/app_session.dart';
 import 'package:dlaundry_mobile/config/failure.dart';
 import 'package:dlaundry_mobile/config/nav.dart';
 import 'package:dlaundry_mobile/datasources/user_datasource.dart';
 import 'package:dlaundry_mobile/pages/auth/register_page.dart';
-import 'package:dlaundry_mobile/providers/register_provider.dart';
+import 'package:dlaundry_mobile/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:d_input/d_input.dart';
@@ -29,59 +30,62 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final editPassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  // execute() {
-  //   bool validInput = formKey.currentState!.validate();
-  //   if (!validInput) return;
+  execute() {
+    bool validInput = formKey.currentState!.validate();
+    if (!validInput) return;
 
-  //   setRegisterStatus(ref, 'Loading');
+    // setLoginStatus(ref, 'Loading');
 
-  //   UserDatasource.register(editEmail.text, editPassword.text).then((value) {
-  //     String newStatus = '';
+    UserDatasource.login(editEmail.text, editPassword.text).then((value) {
+      String newStatus = '';
 
-  //     value.fold(
-  //       (failure) {
-  //         switch (failure.runtimeType) {
-  //           case ServerFailure:
-  //             newStatus = 'Server Error';
-  //             DInfo.toastError(newStatus);
-  //             break;
-  //           case NotFoundFailure:
-  //             newStatus = 'Error Not Found';
-  //             DInfo.toastError(newStatus);
-  //             break;
-  //           case ForbiddenFailure:
-  //             newStatus = 'You Don\'t Have Access';
-  //             DInfo.toastError(newStatus);
-  //             break;
-  //           case BadRequestFailure:
-  //             newStatus = 'Bad Request';
-  //             DInfo.toastError(newStatus);
-  //             break;
-  //           case InvalidInputFailure:
-  //             newStatus = 'Invalid Input';
-  //             AppResponse.invalidInput(context, failure.message ?? '{}');
-  //             break;
-  //           case UnauthorizedFailure:
-  //             newStatus = 'Unauthorized';
-  //             DInfo.toastError(newStatus);
-  //             break;
-  //           default:
-  //             newStatus = 'Request Error';
-  //             DInfo.toastError(newStatus);
-  //             newStatus = failure.message ?? '-';
-  //             break;
-  //         }
+      value.fold(
+        (failure) {
+          switch (failure.runtimeType) {
+            case ServerFailure:
+              newStatus = 'Server Error';
+              DInfo.toastError(newStatus);
+              break;
+            case NotFoundFailure:
+              newStatus = 'Error Not Found';
+              DInfo.toastError(newStatus);
+              break;
+            case ForbiddenFailure:
+              newStatus = 'You Don\'t Have Access';
+              DInfo.toastError(newStatus);
+              break;
+            case BadRequestFailure:
+              newStatus = 'Bad Request';
+              DInfo.toastError(newStatus);
+              break;
+            case InvalidInputFailure:
+              newStatus = 'Invalid Input';
+              AppResponse.invalidInput(context, failure.message ?? '{}');
+              break;
+            case UnauthorisedFailure:
+              newStatus = 'Unauthorized';
+              DInfo.toastError(newStatus);
+              break;
+            default:
+              newStatus = 'Request Error';
+              DInfo.toastError(newStatus);
+              newStatus = failure.message ?? '-';
+              break;
+          }
 
-  //         setRegisterStatus(ref, newStatus);
-  //       },
-  //       (result) {
-  //         DInfo.toastSuccess('Register Success');
+          // setLoginStatus(ref, newStatus);
+        },
+        (result) {
+          AppSession.setUser(result['data']);
+          AppSession.setBearerToken(result['token']);
+          DInfo.toastSuccess('Login Success');
 
-  //         setRegisterStatus(ref, 'Register Success');
-  //       },
-  //     );
-  //   });
-  // }
+          // setLoginStatus(ref, 'Register Success');
+          // Nav.replace(context, const DashboardPage());
+        },
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

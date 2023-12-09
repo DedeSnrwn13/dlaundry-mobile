@@ -12,8 +12,8 @@ class BadRequestFailure extends Failure {
   BadRequestFailure({required super.message});
 }
 
-class UnauthorizedFailure extends Failure {
-  UnauthorizedFailure({required super.message});
+class UnauthorisedFailure extends Failure {
+  UnauthorisedFailure({required super.message});
 }
 
 class ForbiddenFailure extends Failure {

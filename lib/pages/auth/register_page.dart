@@ -64,7 +64,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               newStatus = 'Invalid Input';
               AppResponse.invalidInput(context, failure.message ?? '{}');
               break;
-            case UnauthorizedFailure:
+            case UnauthorisedFailure:
               newStatus = 'Unauthorized';
               DInfo.toastError(newStatus);
               break;

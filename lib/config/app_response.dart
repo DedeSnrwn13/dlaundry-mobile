@@ -20,7 +20,7 @@ class AppResponse {
       case 400:
         throw BadRequestFailure(message: response.body);
       case 401:
-        throw UnauthorizedFailure(message: response.body);
+        throw UnauthorisedFailure(message: response.body);
       case 403:
         throw ForbiddenFailure(message: response.body);
       case 404:
