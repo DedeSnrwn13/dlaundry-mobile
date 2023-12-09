@@ -10,6 +10,7 @@ import 'package:dlaundry_mobile/config/nav.dart';
 import 'package:dlaundry_mobile/datasources/user_datasource.dart';
 import 'package:dlaundry_mobile/pages/auth/register_page.dart';
 import 'package:dlaundry_mobile/pages/dashboard_page.dart';
+import 'package:dlaundry_mobile/providers/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:d_input/d_input.dart';
@@ -34,7 +35,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     bool validInput = formKey.currentState!.validate();
     if (!validInput) return;
 
-    // setLoginStatus(ref, 'Loading');
+    setLoginStatus(ref, 'Loading');
 
     UserDatasource.login(editEmail.text, editPassword.text).then((value) {
       String newStatus = '';
@@ -63,7 +64,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               AppResponse.invalidInput(context, failure.message ?? '{}');
               break;
             case UnauthorisedFailure:
-              newStatus = 'Unauthorized';
+              newStatus = 'Login Failed';
               DInfo.toastError(newStatus);
               break;
             default:
@@ -73,15 +74,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               break;
           }
 
-          // setLoginStatus(ref, newStatus);
+          setLoginStatus(ref, newStatus);
         },
         (result) {
           AppSession.setUser(result['data']);
           AppSession.setBearerToken(result['token']);
           DInfo.toastSuccess('Login Success');
 
-          // setLoginStatus(ref, 'Register Success');
-          // Nav.replace(context, const DashboardPage());
+          setLoginStatus(ref, 'Login Success');
+          Nav.replace(context, const DashboardPage());
         },
       );
     });
@@ -229,14 +230,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               child: Consumer(
                                 builder: (_, wiRef, __) {
                                   String status =
-                                      wiRef.watch(registerStatusProvider);
+                                      wiRef.watch(loginStatusProvider);
 
                                   if (status == 'Loading') {
                                     return DView.loadingCircle();
                                   }
 
                                   return ElevatedButton(
-                                    onPressed: () => {},
+                                    onPressed: () => execute(),
                                     style: const ButtonStyle(
                                       alignment: Alignment.centerLeft,
                                     ),
