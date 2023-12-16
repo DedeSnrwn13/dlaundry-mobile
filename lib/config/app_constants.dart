@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AppConstants {
   static const appName = 'D Laundry';
 
-  static const _host = 'http://50.50.0.204:8000';
+  static const _host = 'http://127.0.0.1:8000';
 
   static const baseURL = '$_host/api';
 
