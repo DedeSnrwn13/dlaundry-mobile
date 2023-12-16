@@ -1,10 +1,11 @@
 import 'package:d_view/d_view.dart';
+import 'package:dlaundry_mobile/pages/dashboard_views/AccountView.dart';
 import 'package:flutter/material.dart';
 
 class AppConstants {
   static const appName = 'D Laundry';
 
-  static const _host = 'http://127.0.0.1:8000';
+  static const _host = 'http://50.50.0.204:8000';
 
   static const baseURL = '$_host/api';
 
@@ -34,7 +35,7 @@ class AppConstants {
       'label': 'My Laundry',
     },
     {
-      'view': DView.empty('Account'),
+      'view': const AccountView(),
       'icon': Icons.account_circle,
       'label': 'Account',
     }
