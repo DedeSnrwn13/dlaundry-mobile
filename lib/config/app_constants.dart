@@ -41,4 +41,12 @@ class AppConstants {
       'label': 'Account',
     }
   ];
+
+  static const homeCategories = [
+    'All',
+    'Regular',
+    'Express',
+    'Economical',
+    'Exclusive'
+  ];
 }
