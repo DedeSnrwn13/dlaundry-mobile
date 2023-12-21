@@ -1,7 +1,7 @@
 import 'user_model.dart';
 import 'shop_model.dart';
 
-class PromoModel {
+class LaundryModel {
   int id;
   String claimCode;
   int userId;
@@ -19,7 +19,7 @@ class PromoModel {
   UserModel user;
   ShopModel shop;
 
-  PromoModel({
+  LaundryModel({
     required this.id,
     required this.claimCode,
     required this.userId,
@@ -38,7 +38,7 @@ class PromoModel {
     required this.shop,
   });
 
-  factory PromoModel.fromJson(Map<String, dynamic> json) => PromoModel(
+  factory LaundryModel.fromJson(Map<String, dynamic> json) => LaundryModel(
         id: json["id"],
         claimCode: json["claim_code"],
         userId: json["user_id"],

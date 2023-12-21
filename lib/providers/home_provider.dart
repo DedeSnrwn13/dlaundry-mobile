@@ -1,4 +1,4 @@
-import 'package:dlaundry_mobile/models/laundry_model.dart';
+import 'package:dlaundry_mobile/models/promo_model.dart';
 import 'package:dlaundry_mobile/models/shop_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

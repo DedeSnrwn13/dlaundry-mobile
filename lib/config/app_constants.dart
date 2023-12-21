@@ -1,5 +1,6 @@
 import 'package:d_view/d_view.dart';
 import 'package:dlaundry_mobile/pages/dashboard_views/AccountView.dart';
+import 'package:dlaundry_mobile/pages/dashboard_views/home_view.dart';
 import 'package:flutter/material.dart';
 
 class AppConstants {
@@ -25,7 +26,7 @@ class AppConstants {
 
   static List<Map> navMenuDashboard = [
     {
-      'view': DView.empty('Home'),
+      'view': const HomeView(),
       'icon': Icons.home_filled,
       'label': 'Home',
     },

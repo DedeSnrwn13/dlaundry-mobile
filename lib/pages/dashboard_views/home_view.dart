@@ -1,11 +1,14 @@
 import 'package:dlaundry_mobile/config/failure.dart';
 import 'package:dlaundry_mobile/datasources/promo_datasource.dart';
 import 'package:dlaundry_mobile/datasources/shop_datasource.dart';
-import 'package:dlaundry_mobile/models/laundry_model.dart';
+import 'package:dlaundry_mobile/models/promo_model.dart';
 import 'package:dlaundry_mobile/models/shop_model.dart';
 import 'package:dlaundry_mobile/providers/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:d_view/d_view.dart';
+import 'package:d_button/d_button.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -15,6 +18,10 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
+  static final editSearch = TextEditingController();
+
+  gotoSearchCity() {}
+
   getPromo() {
     PromoDatasource.readLimit().then((value) {
       value.fold(
@@ -101,6 +108,101 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(30, 20, 30, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'We\'re ready',
+                style: GoogleFonts.ptSans(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              DView.height(4),
+              Text(
+                'to clean your clothes',
+                style: GoogleFonts.ptSans(
+                  color: Colors.black54,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  height: 1,
+                ),
+              ),
+              DView.height(20),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.location_city,
+                        color: Colors.green,
+                        size: 20,
+                      ),
+                      DView.width(4),
+                      Text(
+                        'Find by city',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          color: Colors.grey[600],
+                        ),
+                      )
+                    ],
+                  ),
+                  DView.height(8),
+                  IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green[50],
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () => gotoSearchCity(),
+                                  icon: const Icon(Icons.search),
+                                ),
+                                Expanded(
+                                  child: TextField(
+                                    controller: editSearch,
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Search...',
+                                    ),
+                                    onSubmitted: (value) => gotoSearchCity(),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        DView.width(14),
+                        DButtonElevation(
+                          onClick: () {},
+                          mainColor: Colors.green,
+                          splashColor: Colors.greenAccent,
+                          width: 50,
+                          radius: 10,
+                          child: const Icon(
+                            Icons.tune,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
