@@ -2,7 +2,6 @@ import 'package:dlaundry_mobile/config/app_constants.dart';
 import 'package:dlaundry_mobile/providers/dashboard_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:d_view/d_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DashboardPage extends StatelessWidget {

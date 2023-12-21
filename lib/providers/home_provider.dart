@@ -22,10 +22,6 @@ final homePromoListProvider =
     StateNotifierProvider.autoDispose<HomePromoList, List<PromoModel>>(
         (ref) => HomePromoList([]));
 
-final homeRecommendationListProvider =
-    StateNotifierProvider.autoDispose<HomeRecommendationList, List<ShopModel>>(
-        (ref) => HomeRecommendationList([]));
-
 class HomePromoList extends StateNotifier<List<PromoModel>> {
   HomePromoList(super.state);
 
@@ -33,6 +29,10 @@ class HomePromoList extends StateNotifier<List<PromoModel>> {
     state = newData;
   }
 }
+
+final homeRecommendationListProvider =
+    StateNotifierProvider.autoDispose<HomeRecommendationList, List<ShopModel>>(
+        (ref) => HomeRecommendationList([]));
 
 class HomeRecommendationList extends StateNotifier<List<ShopModel>> {
   HomeRecommendationList(super.state);

@@ -1,3 +1,4 @@
+import 'package:dlaundry_mobile/config/app_assets.dart';
 import 'package:dlaundry_mobile/config/app_colors.dart';
 import 'package:dlaundry_mobile/config/app_constants.dart';
 import 'package:dlaundry_mobile/config/failure.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:d_view/d_view.dart';
 import 'package:d_button/d_button.dart';
+import 'package:dlaundry_mobile/config/app_format.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -115,27 +118,128 @@ class _HomeViewState extends ConsumerState<HomeView> {
         header(),
         categories(),
         DView.height(20),
-        Consumer(builder: (_, wiRef, __) {
-          List<PromoModel> list = wiRef.watch(homePromoListProvider);
-
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    DView.textTitle('Promo', color: Colors.black),
-                    DView.textAction(() {}, color: AppColor.primary),
-                  ],
-                ),
-              ),
-              if (list.isEmpty) DView.empty('No Promo'),
-            ],
-          );
-        })
+        promos(),
       ],
     );
+  }
+
+  Consumer promos() {
+    final pageController = PageController();
+
+    return Consumer(builder: (_, wiRef, __) {
+      List<PromoModel> list = wiRef.watch(homePromoListProvider);
+
+      return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                DView.textTitle('Promo', color: Colors.black),
+                DView.textAction(() {}, color: AppColor.primary),
+              ],
+            ),
+          ),
+          if (list.isEmpty) DView.empty('No Promo'),
+          if (list.isNotEmpty)
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: PageView.builder(
+                controller: pageController,
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  PromoModel item = list[index];
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: FadeInImage(
+                              placeholder: const AssetImage(
+                                AppAssets.placeholderLaundry,
+                              ),
+                              image: NetworkImage(
+                                '${AppConstants.baseImageURL}/promo/${item.image}',
+                              ),
+                              fit: BoxFit.cover,
+                              imageErrorBuilder: (context, error, stackTrace) {
+                                return const Icon(Icons.error);
+                              },
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 6,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  item.shop.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                DView.height(4),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '${AppFormat.shortPrice(item.newPrice)} /kg',
+                                      style: const TextStyle(
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                    DView.width(16),
+                                    Text(
+                                      '${AppFormat.shortPrice(item.oldPrice)} /kg',
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          if (list.isEmpty) DView.height(8),
+          if (list.isNotEmpty)
+            SmoothPageIndicator(
+              controller: pageController,
+              count: list.length,
+              effect: WormEffect(
+                dotHeight: 4,
+                dotWidth: 12,
+                dotColor: Colors.grey[300]!,
+                activeDotColor: AppColor.primary,
+              ),
+            ),
+        ],
+      );
+    });
   }
 
   Consumer categories() {

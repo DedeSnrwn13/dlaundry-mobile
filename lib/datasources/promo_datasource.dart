@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:dlaundry_mobile/config/app_constants.dart';
 import 'package:dlaundry_mobile/config/app_request.dart';
 import 'package:dlaundry_mobile/config/app_response.dart';
@@ -18,7 +20,7 @@ class PromoDatasource {
       );
 
       final data = AppResponse.data(response);
-
+      
       return Right(data);
     } catch (e) {
       if (e is Failure) {
