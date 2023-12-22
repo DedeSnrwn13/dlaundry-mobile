@@ -14,6 +14,7 @@ import 'package:d_view/d_view.dart';
 import 'package:d_button/d_button.dart';
 import 'package:dlaundry_mobile/config/app_format.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -119,7 +120,162 @@ class _HomeViewState extends ConsumerState<HomeView> {
         categories(),
         DView.height(20),
         promos(),
+        DView.height(20),
+        recommendations(),
       ],
+    );
+  }
+
+  Padding header() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 20, 30, 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'We\'re ready',
+            style: GoogleFonts.ptSans(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          DView.height(4),
+          Text(
+            'to clean your clothes',
+            style: GoogleFonts.ptSans(
+              color: Colors.black54,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              height: 1,
+            ),
+          ),
+          DView.height(20),
+          Column(
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.location_city,
+                    color: Colors.green,
+                    size: 20,
+                  ),
+                  DView.width(4),
+                  Text(
+                    'Find by city',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      color: Colors.grey[600],
+                    ),
+                  )
+                ],
+              ),
+              DView.height(8),
+              IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green[50],
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () => gotoSearchCity(),
+                              icon: const Icon(Icons.search),
+                            ),
+                            Expanded(
+                              child: TextField(
+                                controller: editSearch,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Search...',
+                                ),
+                                onSubmitted: (value) => gotoSearchCity(),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    DView.width(14),
+                    DButtonElevation(
+                      onClick: () {},
+                      mainColor: Colors.green,
+                      splashColor: Colors.greenAccent,
+                      width: 50,
+                      radius: 10,
+                      child: const Icon(
+                        Icons.tune,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Consumer categories() {
+    return Consumer(
+      builder: (_, wiRef, __) {
+        String categorySelected = wiRef.watch(homeCategoryProvider);
+
+        return SizedBox(
+          height: 30,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: AppConstants.homeCategories.length,
+            itemBuilder: (context, index) {
+              String category = AppConstants.homeCategories[index];
+
+              return Padding(
+                padding: EdgeInsets.fromLTRB(
+                  index == 0 ? 30 : 8,
+                  0,
+                  index == AppConstants.homeCategories.length - 1 ? 30 : 8,
+                  0,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    setHomeCategory(ref, category);
+                  },
+                  borderRadius: BorderRadius.circular(30),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: categorySelected == category
+                          ? Colors.green
+                          : Colors.transparent,
+                      border: Border.all(
+                        color: categorySelected == category
+                            ? Colors.green
+                            : Colors.grey[400]!,
+                      ),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      category,
+                      style: TextStyle(
+                        height: 1,
+                        color: categorySelected == category
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -242,156 +398,177 @@ class _HomeViewState extends ConsumerState<HomeView> {
     });
   }
 
-  Consumer categories() {
+  Consumer recommendations() {
     return Consumer(
       builder: (_, wiRef, __) {
-        String categorySelected = wiRef.watch(homeCategoryProvider);
+        List<ShopModel> list = wiRef.watch(homeRecommendationListProvider);
 
-        return SizedBox(
-          height: 30,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: AppConstants.homeCategories.length,
-            itemBuilder: (context, index) {
-              String category = AppConstants.homeCategories[index];
-
-              return Padding(
-                padding: EdgeInsets.fromLTRB(
-                  index == 0 ? 30 : 8,
-                  0,
-                  index == AppConstants.homeCategories.length - 1 ? 30 : 8,
-                  0,
-                ),
-                child: InkWell(
-                  onTap: () {
-                    setHomeCategory(ref, category);
-                  },
-                  borderRadius: BorderRadius.circular(30),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: categorySelected == category
-                          ? Colors.green
-                          : Colors.transparent,
-                      border: Border.all(
-                        color: categorySelected == category
-                            ? Colors.green
-                            : Colors.grey[400]!,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      category,
-                      style: TextStyle(
-                        height: 1,
-                        color: categorySelected == category
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  Padding header() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(30, 20, 30, 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'We\'re ready',
-            style: GoogleFonts.ptSans(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          DView.height(4),
-          Text(
-            'to clean your clothes',
-            style: GoogleFonts.ptSans(
-              color: Colors.black54,
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-              height: 1,
-            ),
-          ),
-          DView.height(20),
-          Column(
-            children: [
-              Row(
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(
-                    Icons.location_city,
-                    color: Colors.green,
-                    size: 20,
-                  ),
-                  DView.width(4),
-                  Text(
-                    'Find by city',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w300,
-                      color: Colors.grey[600],
-                    ),
-                  )
+                  DView.textTitle('Recommendation', color: Colors.black),
+                  DView.textAction(() {}, color: AppColor.primary),
                 ],
               ),
-              DView.height(8),
-              IntrinsicHeight(
-                child: Row(
-                  children: [
-                    Expanded(
+            ),
+            if (list.isEmpty) DView.empty('No Recommendation'),
+            if (list.isNotEmpty)
+              SizedBox(
+                height: 250,
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    ShopModel item = list[index];
+
+                    return GestureDetector(
+                      onTap: () {},
                       child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.green[50],
-                          borderRadius: BorderRadius.circular(16),
+                        margin: EdgeInsets.fromLTRB(
+                          index == 0 ? 30 : 10,
+                          0,
+                          index == list.length - 1 ? 30 : 10,
+                          0,
                         ),
-                        child: Row(
+                        width: 200,
+                        child: Stack(
+                          fit: StackFit.expand,
                           children: [
-                            IconButton(
-                              onPressed: () => gotoSearchCity(),
-                              icon: const Icon(Icons.search),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                controller: editSearch,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'Search...',
-                                ),
-                                onSubmitted: (value) => gotoSearchCity(),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: FadeInImage(
+                                placeholder: const AssetImage(
+                                    AppAssets.placeholderLaundry),
+                                image: NetworkImage(
+                                    '${AppConstants.baseImageURL}/shop/${item.image}'),
+                                fit: BoxFit.cover,
+                                imageErrorBuilder:
+                                    (context, error, stackTrace) {
+                                  return const Icon(Icons.error);
+                                },
                               ),
-                            )
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                height: 150,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                  gradient: LinearGradient(
+                                    colors: [Colors.transparent, Colors.black],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 8,
+                              bottom: 8,
+                              right: 8,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: ['Regular', 'Express'].map((e) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.green.withOpacity(0.8),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        margin: const EdgeInsets.only(right: 4),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        child: Text(
+                                          e,
+                                          style: const TextStyle(
+                                            height: 1,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  DView.height(8),
+                                  Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(8)),
+                                    padding: const EdgeInsets.all(8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item.name,
+                                          style: GoogleFonts.ptSans(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        DView.height(4),
+                                        Row(
+                                          children: [
+                                            RatingBar.builder(
+                                              initialRating: item.rate,
+                                              itemCount: 5,
+                                              allowHalfRating: true,
+                                              itemPadding:
+                                                  const EdgeInsets.all(0),
+                                              unratedColor: Colors.grey[300],
+                                              itemBuilder: (context, index) =>
+                                                  const Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                              itemSize: 12,
+                                              onRatingUpdate: (value) {},
+                                              ignoreGestures: true,
+                                            ),
+                                            DView.width(4),
+                                            Text(
+                                              '(${item.rate})',
+                                              style: const TextStyle(
+                                                color: Colors.black87,
+                                                fontSize: 11,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        DView.height(4),
+                                        Text(
+                                          item.location,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                    DView.width(14),
-                    DButtonElevation(
-                      onClick: () {},
-                      mainColor: Colors.green,
-                      splashColor: Colors.greenAccent,
-                      width: 50,
-                      radius: 10,
-                      child: const Icon(
-                        Icons.tune,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               )
-            ],
-          )
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 }
