@@ -1,11 +1,13 @@
-import 'package:dlaundry_mobile/config/app_assets.dart';
+// import 'package:dlaundry_mobile/config/app_assets.dart';
 import 'package:dlaundry_mobile/config/app_colors.dart';
 import 'package:dlaundry_mobile/config/app_constants.dart';
 import 'package:dlaundry_mobile/config/failure.dart';
+import 'package:dlaundry_mobile/config/nav.dart';
 import 'package:dlaundry_mobile/datasources/promo_datasource.dart';
 import 'package:dlaundry_mobile/datasources/shop_datasource.dart';
 import 'package:dlaundry_mobile/models/promo_model.dart';
 import 'package:dlaundry_mobile/models/shop_model.dart';
+import 'package:dlaundry_mobile/pages/search_by_city_page.dart';
 import 'package:dlaundry_mobile/providers/home_provider.dart';
 import 'package:dlaundry_mobile/widgets/error_background.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +30,9 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   static final editSearch = TextEditingController();
 
-  gotoSearchCity() {}
+  gotoSearchCity() {
+    Nav.push(context, SearchByCityPage(query: editSearch.text));
+  }
 
   getPromo() {
     PromoDatasource.readLimit().then((value) {
