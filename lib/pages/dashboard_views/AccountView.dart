@@ -212,8 +212,7 @@ class AccountView extends StatelessWidget {
                   applicationName: 'D Laundry',
                   applicationVersion: 'v1.0.0',
                   children: [
-                    const Text(
-                        'Laundry Market App to monitor your laundry status.'),
+                    const Text('Laundry Market App to monitor your laundry status.'),
                   ],
                 );
               },

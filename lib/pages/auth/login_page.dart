@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:dlaundry_mobile/config/app_assets.dart';
 import 'package:dlaundry_mobile/config/app_colors.dart';
 import 'package:dlaundry_mobile/config/app_constants.dart';
@@ -167,8 +165,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 fillColor: Colors.white70,
                                 hint: 'Email',
                                 radius: BorderRadius.circular(10),
-                                validator: (input) =>
-                                    input == '' ? "Don't empty" : null,
+                                validator: (input) => input == '' ? "Don't empty" : null,
                               ),
                             ),
                           ],
@@ -196,8 +193,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 fillColor: Colors.white70,
                                 hint: 'Password',
                                 radius: BorderRadius.circular(10),
-                                validator: (input) =>
-                                    input == '' ? "Don't empty" : null,
+                                validator: (input) => input == '' ? "Don't empty" : null,
                               ),
                             ),
                           ],
@@ -229,8 +225,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             Expanded(
                               child: Consumer(
                                 builder: (_, wiRef, __) {
-                                  String status =
-                                      wiRef.watch(loginStatusProvider);
+                                  String status = wiRef.watch(loginStatusProvider);
 
                                   if (status == 'Loading') {
                                     return DView.loadingCircle();

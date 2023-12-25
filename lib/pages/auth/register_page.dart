@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:dlaundry_mobile/config/app_assets.dart';
 import 'package:dlaundry_mobile/config/app_colors.dart';
 import 'package:dlaundry_mobile/config/app_constants.dart';
@@ -165,8 +163,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                 fillColor: Colors.white70,
                                 hint: 'Username',
                                 radius: BorderRadius.circular(10),
-                                validator: (input) =>
-                                    input == '' ? "Don't empty" : null,
+                                validator: (input) => input == '' ? "Don't empty" : null,
                               ),
                             ),
                           ],
@@ -194,8 +191,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                 fillColor: Colors.white70,
                                 hint: 'Email',
                                 radius: BorderRadius.circular(10),
-                                validator: (input) =>
-                                    input == '' ? "Don't empty" : null,
+                                validator: (input) => input == '' ? "Don't empty" : null,
                               ),
                             ),
                           ],
@@ -223,8 +219,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                                 fillColor: Colors.white70,
                                 hint: 'Password',
                                 radius: BorderRadius.circular(10),
-                                validator: (input) =>
-                                    input == '' ? "Don't empty" : null,
+                                validator: (input) => input == '' ? "Don't empty" : null,
                               ),
                             ),
                           ],
@@ -256,8 +251,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             Expanded(
                               child: Consumer(
                                 builder: (_, wiRef, __) {
-                                  String status =
-                                      wiRef.watch(registerStatusProvider);
+                                  String status = wiRef.watch(registerStatusProvider);
 
                                   if (status == 'Loading') {
                                     return DView.loadingCircle();

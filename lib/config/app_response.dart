@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'dart:convert';
 import 'package:dlaundry_mobile/config/failure.dart';
 import 'package:flutter/material.dart';
@@ -51,10 +49,7 @@ class AppResponse {
                     children: (e.value! as List).map((itemError) {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('- '),
-                          Expanded(child: Text(itemError))
-                        ],
+                        children: [const Text('- '), Expanded(child: Text(itemError))],
                       );
                     }).toList(),
                   ),

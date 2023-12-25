@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:dlaundry_mobile/config/app_session.dart';
 import 'package:dlaundry_mobile/pages/auth/login_page.dart';
 import 'package:dlaundry_mobile/pages/dashboard_page.dart';
