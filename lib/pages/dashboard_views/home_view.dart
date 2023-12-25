@@ -15,6 +15,7 @@ import 'package:d_button/d_button.dart';
 import 'package:dlaundry_mobile/config/app_format.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:extended_image/extended_image.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -57,8 +58,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
           setHomePromoStatus(ref, 'Success');
 
           List data = result['data'];
-          List<PromoModel> promos =
-              data.map((e) => PromoModel.fromJson(e)).toList();
+          List<PromoModel> promos = data.map((e) => PromoModel.fromJson(e)).toList();
 
           ref.read(homePromoListProvider.notifier).setData(promos);
         },
@@ -95,8 +95,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
           setHomeRecommendationStatus(ref, 'Success');
 
           List data = result['data'];
-          List<ShopModel> shops =
-              data.map((e) => ShopModel.fromJson(e)).toList();
+          List<ShopModel> shops = data.map((e) => ShopModel.fromJson(e)).toList();
 
           ref.read(homeRecommendationListProvider.notifier).setData(shops);
         },
@@ -249,13 +248,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
-                      color: categorySelected == category
-                          ? Colors.green
-                          : Colors.transparent,
+                      color: categorySelected == category ? Colors.green : Colors.transparent,
                       border: Border.all(
-                        color: categorySelected == category
-                            ? Colors.green
-                            : Colors.grey[400]!,
+                        color: categorySelected == category ? Colors.green : Colors.grey[400]!,
                       ),
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -264,9 +259,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       category,
                       style: TextStyle(
                         height: 1,
-                        color: categorySelected == category
-                            ? Colors.white
-                            : Colors.black,
+                        color: categorySelected == category ? Colors.white : Colors.black,
                       ),
                     ),
                   ),
@@ -316,17 +309,24 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           padding: const EdgeInsets.only(bottom: 20),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: FadeInImage(
-                              placeholder: const AssetImage(
-                                AppAssets.placeholderLaundry,
-                              ),
-                              image: NetworkImage(
-                                '${AppConstants.baseImageURL}/promo/${item.image}',
-                              ),
+                            // child: FadeInImage(
+                            //   placeholder: const AssetImage(
+                            //     AppAssets.placeholderLaundry,
+                            //   ),
+                            //   image: NetworkImage(
+                            //     '${AppConstants.baseImageURL}/promo/${item.image}',
+                            //   ),
+                            //   fit: BoxFit.cover,
+                            //   imageErrorBuilder: (context, error, stackTrace) {
+                            //     return const Icon(Icons.error);
+                            //   },
+                            // ),
+                            child: ExtendedImage.network(
+                              '${AppConstants.baseImageURL}/promo/${item.image}',
                               fit: BoxFit.cover,
-                              imageErrorBuilder: (context, error, stackTrace) {
-                                return const Icon(Icons.error);
-                              },
+                              cache: true,
+                              shape: BoxShape.rectangle,
+                              //cancelToken: cancellationToken,
                             ),
                           ),
                         ),
@@ -420,6 +420,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
               SizedBox(
                 height: 250,
                 child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: list.length,
                   itemBuilder: (context, index) {
                     ShopModel item = list[index];
 
@@ -438,16 +440,20 @@ class _HomeViewState extends ConsumerState<HomeView> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: FadeInImage(
-                                placeholder: const AssetImage(
-                                    AppAssets.placeholderLaundry),
-                                image: NetworkImage(
-                                    '${AppConstants.baseImageURL}/shop/${item.image}'),
+                              // child: FadeInImage(
+                              //   placeholder: const AssetImage(AppAssets.placeholderLaundry),
+                              //   image: NetworkImage('${AppConstants.baseImageURL}/shop/${item.image}'),
+                              //   fit: BoxFit.cover,
+                              //   imageErrorBuilder: (context, error, stackTrace) {
+                              //     return const Icon(Icons.error);
+                              //   },
+                              // ),
+                              child: ExtendedImage.network(
+                                '${AppConstants.baseImageURL}/shop/${item.image}',
                                 fit: BoxFit.cover,
-                                imageErrorBuilder:
-                                    (context, error, stackTrace) {
-                                  return const Icon(Icons.error);
-                                },
+                                cache: true,
+                                shape: BoxShape.rectangle,
+                                //cancelToken: cancellationToken,
                               ),
                             ),
                             Align(
@@ -460,7 +466,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                     bottomRight: Radius.circular(10),
                                   ),
                                   gradient: LinearGradient(
-                                    colors: [Colors.transparent, Colors.black],
+                                    colors: [
+                                      Colors.transparent,
+                                      Colors.black,
+                                    ],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                   ),
@@ -478,8 +487,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                       return Container(
                                         decoration: BoxDecoration(
                                           color: Colors.green.withOpacity(0.8),
-                                          borderRadius:
-                                              BorderRadius.circular(6),
+                                          borderRadius: BorderRadius.circular(6),
                                         ),
                                         margin: const EdgeInsets.only(right: 4),
                                         padding: const EdgeInsets.symmetric(
@@ -499,13 +507,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                   DView.height(8),
                                   Container(
                                     width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8)),
+                                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
                                     padding: const EdgeInsets.all(8),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           item.name,
@@ -521,11 +526,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                                               initialRating: item.rate,
                                               itemCount: 5,
                                               allowHalfRating: true,
-                                              itemPadding:
-                                                  const EdgeInsets.all(0),
+                                              itemPadding: const EdgeInsets.all(0),
                                               unratedColor: Colors.grey[300],
-                                              itemBuilder: (context, index) =>
-                                                  const Icon(
+                                              itemBuilder: (context, index) => const Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
                                               ),
