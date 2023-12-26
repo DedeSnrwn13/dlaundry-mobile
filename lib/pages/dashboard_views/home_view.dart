@@ -7,6 +7,7 @@ import 'package:dlaundry_mobile/datasources/promo_datasource.dart';
 import 'package:dlaundry_mobile/datasources/shop_datasource.dart';
 import 'package:dlaundry_mobile/models/promo_model.dart';
 import 'package:dlaundry_mobile/models/shop_model.dart';
+import 'package:dlaundry_mobile/pages/detail_shop_page.dart';
 import 'package:dlaundry_mobile/pages/search_by_city_page.dart';
 import 'package:dlaundry_mobile/providers/home_provider.dart';
 import 'package:dlaundry_mobile/widgets/error_background.dart';
@@ -452,7 +453,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     ShopModel item = list[index];
 
                     return GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Nav.push(context, DetailShopPage(shop: item));
+                      },
                       child: Container(
                         margin: EdgeInsets.fromLTRB(
                           index == 0 ? 30 : 10,

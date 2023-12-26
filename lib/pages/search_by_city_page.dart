@@ -1,8 +1,10 @@
 import 'package:d_view/d_view.dart';
 import 'package:dlaundry_mobile/config/app_colors.dart';
 import 'package:dlaundry_mobile/config/failure.dart';
+import 'package:dlaundry_mobile/config/nav.dart';
 import 'package:dlaundry_mobile/datasources/shop_datasource.dart';
 import 'package:dlaundry_mobile/models/shop_model.dart';
+import 'package:dlaundry_mobile/pages/detail_shop_page.dart';
 import 'package:dlaundry_mobile/providers/search_by_city_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -127,7 +129,9 @@ class _SearchByCityPageState extends ConsumerState<SearchByCityPage> {
                 ShopModel shop = list[index];
 
                 return ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Nav.push(context, DetailShopPage(shop: shop));
+                  },
                   leading: CircleAvatar(
                     backgroundColor: AppColor.primary,
                     foregroundColor: Colors.white,
