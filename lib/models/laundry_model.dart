@@ -11,7 +11,7 @@ class LaundryModel {
   bool withDelivery;
   String pickupAddress;
   String deliveryAddress;
-  int total;
+  double total;
   String description;
   String status;
   DateTime createdAt;
