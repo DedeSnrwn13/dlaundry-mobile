@@ -3,16 +3,18 @@ import 'package:dlaundry_mobile/config/failure.dart';
 import 'package:dlaundry_mobile/datasources/laundry_datasource.dart';
 import 'package:dlaundry_mobile/models/laundry_model.dart';
 import 'package:dlaundry_mobile/models/user_model.dart';
+import 'package:dlaundry_mobile/providers/my_laundry_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyLaundryView extends StatefulWidget {
+class MyLaundryView extends ConsumerStatefulWidget {
   const MyLaundryView({super.key});
 
   @override
-  State<MyLaundryView> createState() => _MyLaundryViewState();
+  ConsumerState<MyLaundryView> createState() => _MyLaundryViewState();
 }
 
-class _MyLaundryViewState extends State<MyLaundryView> {
+class _MyLaundryViewState extends ConsumerState<MyLaundryView> {
   late UserModel user;
 
   getMyLaundry() {
@@ -21,28 +23,32 @@ class _MyLaundryViewState extends State<MyLaundryView> {
         (failure) {
           switch (failure.runtimeType) {
             case ServerFailure:
-              // setHomePromoStatus(ref, 'Server Error');
+              setMyLaundryStatus(ref, 'Server Error');
               break;
             case NotFoundFailure:
-              // setHomePromoStatus(ref, 'Error Not Found');
+              setMyLaundryStatus(ref, 'Error Not Found');
               break;
             case ForbiddenFailure:
-              // setHomePromoStatus(ref, 'You don\'t have access');
+              setMyLaundryStatus(ref, 'You don\'t have access');
               break;
             case BadRequestFailure:
-              // setHomePromoStatus(ref, 'Bad Request');
+              setMyLaundryStatus(ref, 'Bad Request');
               break;
             case UnauthorisedFailure:
-              // setHomePromoStatus(ref, 'Unauthorised');
+              setMyLaundryStatus(ref, 'Unauthorised');
               break;
             default:
-              // setHomePromoStatus(ref, 'Request Error');
+              setMyLaundryStatus(ref, 'Request Error');
               break;
           }
         },
         (result) {
+          setMyLaundryStatus(ref, 'Success');
+
           List data = result['data'];
           List<LaundryModel> laundries = data.map((e) => LaundryModel.fromJson(e)).toList();
+
+          ref.read(myLaundryListProvider.notifier).setData(laundries);
         },
       );
     });
