@@ -1,7 +1,9 @@
+import 'package:d_info/d_info.dart';
 import 'package:d_input/d_input.dart';
 import 'package:d_view/d_view.dart';
 import 'package:dlaundry_mobile/config/app_constants.dart';
 import 'package:dlaundry_mobile/config/app_format.dart';
+import 'package:dlaundry_mobile/config/app_response.dart';
 import 'package:dlaundry_mobile/config/app_session.dart';
 import 'package:dlaundry_mobile/config/failure.dart';
 import 'package:dlaundry_mobile/datasources/laundry_datasource.dart';
@@ -97,7 +99,7 @@ class _MyLaundryViewState extends ConsumerState<MyLaundryView> {
                   if (formKey.currentState!.validate()) {
                     Navigator.pop(context);
 
-                    claimNow();
+                    claimNow(editLaundryID.text, editClaimCode.text);
                   }
                 },
                 child: const Text('Claim Now'),
@@ -114,7 +116,41 @@ class _MyLaundryViewState extends ConsumerState<MyLaundryView> {
     );
   }
 
-  claimNow() {}
+  claimNow(String id, String claimCode) {
+    LaundryDatasource.claim(id, claimCode).then((value) {
+      value.fold(
+        (failure) {
+          switch (failure.runtimeType) {
+            case ServerFailure:
+              DInfo.toastError('Server Error');
+              break;
+            case NotFoundFailure:
+              DInfo.toastError('Error Not Found');
+              break;
+            case ForbiddenFailure:
+              DInfo.toastError('You don\'t have access');
+              break;
+            case BadRequestFailure:
+              DInfo.toastError('Laundry has been claimed');
+              break;
+            case InvalidInputFailure:
+              AppResponse.invalidInput(context, failure.message ?? '{}');
+              break;
+            case UnauthorisedFailure:
+              DInfo.toastError('Unauthorised');
+              break;
+            default:
+              DInfo.toastError('Request Error');
+              break;
+          }
+        },
+        (result) {
+          DInfo.toastSuccess('Claim Success');
+          getMyLaundry();
+        },
+      );
+    });
+  }
 
   @override
   void initState() {
