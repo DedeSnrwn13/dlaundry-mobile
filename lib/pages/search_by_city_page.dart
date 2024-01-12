@@ -31,7 +31,7 @@ class _SearchByCityPageState extends ConsumerState<SearchByCityPage> {
               setSearchByCityStatus(ref, 'Server Error');
               break;
             case NotFoundFailure:
-              setSearchByCityStatus(ref, 'Error Not Found');
+              setSearchByCityStatus(ref, 'Not Found');
               break;
             case ForbiddenFailure:
               setSearchByCityStatus(ref, 'You don\'t have access');
