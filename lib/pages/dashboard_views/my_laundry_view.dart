@@ -200,9 +200,23 @@ class _MyLaundryViewState extends ConsumerState<MyLaundryView> {
                 }
 
                 if (list.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.fromLTRB(30, 0, 30, 80),
-                    child: ErrorBackground(ratio: 16 / 9, message: 'Empty'),
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 30, 30, 80),
+                    child: Stack(
+                      children: [
+                        const ErrorBackground(
+                          ratio: 16 / 9,
+                          message: 'Empty',
+                        ),
+                        IconButton(
+                          onPressed: () => getMyLaundry(),
+                          icon: const Icon(
+                            Icons.refresh,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
 
